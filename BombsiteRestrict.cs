@@ -5,10 +5,12 @@ using CounterStrikeSharp.API.Core.Attributes.Registration;
 using CounterStrikeSharp.API.Modules.Utils;
 using System.Text.Json.Serialization;
 using CounterStrikeSharp.API.Modules.Commands;
+using Vector = CounterStrikeSharp.API.Modules.Utils.Vector;
+using System.Drawing;
 
 
 namespace BombsiteRestrict;
-[MinimumApiVersion(202)]
+[MinimumApiVersion(242)]
 public class Config : BasePluginConfig
 {
     [JsonPropertyName("Minimum players")] public int iMinPlayers { get; set; } = 6;
@@ -173,8 +175,60 @@ public class BombsiteRestrict : BasePlugin, IPluginConfig<Config>
         }
         return HookResult.Continue;
     }
+
+    public void DrawLaserBetween(Vector startPos, Vector endPos, string _color = "")
+        {
+            string beamColor;
+            beamColor = _color;
+            CBeam beam = Utilities.CreateEntityByName<CBeam>("beam")!;
+            if (beam == null)
+            {
+                Console.WriteLine($"Failed to create beam...");
+                return;
+            }
+            beam.Render = Color.FromName(beamColor);
+            beam.Width = 1.5f;
+            beam.Teleport(startPos, new QAngle(0, 0, 0), new Vector(0, 0, 0));
+            beam.EndPos.X = endPos.X;
+            beam.EndPos.Y = endPos.Y;
+            beam.EndPos.Z = endPos.Z;
+
+            beam.DispatchSpawn();
+            Console.WriteLine($"Beam Spawned at S:{startPos} E:{beam.EndPos}");
+        }
+ public void DrawWireframe3D(Vector corner1, Vector corner8, string _color)
+        {
+            Vector corner2 = new(corner1.X, corner8.Y, corner1.Z);
+            Vector corner3 = new(corner8.X, corner8.Y, corner1.Z);
+            Vector corner4 = new(corner8.X, corner1.Y, corner1.Z);
+
+            Vector corner5 = new(corner8.X, corner1.Y, corner8.Z);
+            Vector corner6 = new(corner1.X, corner1.Y, corner8.Z);
+            Vector corner7 = new(corner1.X, corner8.Y, corner8.Z);
+
+            //top square
+            DrawLaserBetween(corner1, corner2, _color);
+            DrawLaserBetween(corner2, corner3, _color);
+            DrawLaserBetween(corner3, corner4, _color);
+            DrawLaserBetween(corner4, corner1, _color);
+
+            //bottom square
+            DrawLaserBetween(corner5, corner6, _color);
+            DrawLaserBetween(corner6, corner7, _color);
+            DrawLaserBetween(corner7, corner8, _color);
+            DrawLaserBetween(corner8, corner5, _color);
+
+            //connect them both to build a cube
+            DrawLaserBetween(corner1, corner6, _color);
+            DrawLaserBetween(corner2, corner7, _color);
+            DrawLaserBetween(corner3, corner8, _color);
+            DrawLaserBetween(corner4, corner5, _color);
+        }
+
     private void DisableBombsite()
     {
+        Vector? startMins = null;
+        Vector? startMaxs = null;
         var Sites = Utilities.FindAllEntitiesByDesignerName<CBaseEntity>("func_bomb_target");
         foreach (var entity in Sites)
         {
@@ -183,7 +237,18 @@ public class BombsiteRestrict : BasePlugin, IPluginConfig<Config>
             if (entitySite == disabledSite)
             {
                 if (entity.IsValid)
+                {
                     entity.AcceptInput("Disable");
+                    
+                    startMins = new Vector(1106, -414, -100);
+                    startMaxs = new Vector(1300, 300, -100);
+                    //startMaxs = entity.Collision!.Maxs + entity.CBodyComponent.SceneNode.AbsOrigin;
+                    //startMins = entity.Collision!.Mins + entity.CBodyComponent!.SceneNode!.AbsOrigin;
+                    //startMaxs = entity.Collision!.Maxs + entity.CBodyComponent.SceneNode.AbsOrigin;
+                    DrawWireframe3D(startMins, startMaxs, "#ff0000");
+
+                }
+
             }
         }
     }

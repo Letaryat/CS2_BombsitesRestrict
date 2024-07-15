@@ -1,0 +1,13 @@
+C:\Users\letar\Documents\GitHub\CS2_BombsitesRestrict\bin\Debug\net8.0\BombsiteRestrict.deps.json
+C:\Users\letar\Documents\GitHub\CS2_BombsitesRestrict\bin\Debug\net8.0\BombsiteRestrict.dll
+C:\Users\letar\Documents\GitHub\CS2_BombsitesRestrict\bin\Debug\net8.0\BombsiteRestrict.pdb
+C:\Users\letar\Documents\GitHub\CS2_BombsitesRestrict\obj\Debug\net8.0\BombsiteRestrict.csproj.AssemblyReference.cache
+C:\Users\letar\Documents\GitHub\CS2_BombsitesRestrict\obj\Debug\net8.0\BombsiteRestrict.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\letar\Documents\GitHub\CS2_BombsitesRestrict\obj\Debug\net8.0\BombsiteRestrict.AssemblyInfoInputs.cache
+C:\Users\letar\Documents\GitHub\CS2_BombsitesRestrict\obj\Debug\net8.0\BombsiteRestrict.AssemblyInfo.cs
+C:\Users\letar\Documents\GitHub\CS2_BombsitesRestrict\obj\Debug\net8.0\BombsiteRestrict.csproj.CoreCompileInputs.cache
+C:\Users\letar\Documents\GitHub\CS2_BombsitesRestrict\obj\Debug\net8.0\BombsiteRestrict.sourcelink.json
+C:\Users\letar\Documents\GitHub\CS2_BombsitesRestrict\obj\Debug\net8.0\BombsiteRestrict.dll
+C:\Users\letar\Documents\GitHub\CS2_BombsitesRestrict\obj\Debug\net8.0\refint\BombsiteRestrict.dll
+C:\Users\letar\Documents\GitHub\CS2_BombsitesRestrict\obj\Debug\net8.0\BombsiteRestrict.pdb
+C:\Users\letar\Documents\GitHub\CS2_BombsitesRestrict\obj\Debug\net8.0\ref\BombsiteRestrict.dll
