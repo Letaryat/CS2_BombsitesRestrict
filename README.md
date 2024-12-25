@@ -23,6 +23,10 @@ Configuration in
 | `Which team count as players` | It allows setting which team will be considered as the 'Minimum players'. (`0` - Both teams , `1` - Only T , `2` - Only CT)|
 | `Send plant restrict message to team` | Which team gets a message when bombsite is disabled (`0` - Both teams , `1` - Only CT , `2` - Only T)|
 | `Center message timer` | Customize how many seconds at the round start, will be center message displayed. To disabled center message, set this option to `0`. |
+| `Laser` | If laser should be on / off (`true` or `false`) |
+| `Laser color on available bombsite` | What color of laser should bombsite that is not blocked have (ex: `green`, `red`, `pink`) |
+| `Laser color on non-available bombsite` | What color of laser should bombsite that is blocked have (ex: `green`, `red`, `pink`) |
+| `Cube` | If lasers should form a 3D cube (`true` or `false`) |
 
 ## Command
 |  Name | Allowed Values | Additional info  |

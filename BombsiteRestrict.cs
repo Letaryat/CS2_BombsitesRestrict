@@ -4,6 +4,7 @@ using CounterStrikeSharp.API.Core.Attributes;
 using CounterStrikeSharp.API.Core.Attributes.Registration;
 using CounterStrikeSharp.API.Modules.Utils;
 using System.Text.Json.Serialization;
+using System.Drawing;
 using CounterStrikeSharp.API.Modules.Commands;
 
 
@@ -16,6 +17,10 @@ public class Config : BasePluginConfig
     [JsonPropertyName("Which team count as players")] public int iTeam { get; set; } = 0;
     [JsonPropertyName("Send plant restrict message to team")] public int iMessageTeam { get; set; } = 0;
     [JsonPropertyName("Center message timer")] public int iTimer { get; set; } = 15;
+    [JsonPropertyName("Laser")] public bool Laser { get; set; } = true;
+    [JsonPropertyName("Cube")] public bool Cube { get; set; } = true;
+    [JsonPropertyName("Laser color on available bombsite")] public string Laser1 { get; set; } = "Green";
+    [JsonPropertyName("Laser color on non-available bombsite")] public string Laser2 { get; set; } = "Red";
 }
 
 public class BombsiteRestrict : BasePlugin, IPluginConfig<Config>
@@ -182,8 +187,18 @@ public class BombsiteRestrict : BasePlugin, IPluginConfig<Config>
             if (entitySite == disabledSite)
             {
                 if (entity.IsValid)
-                    entity.AcceptInput("Disable");
+                {
+                    entity!.AcceptInput("Disable");
+                    if (!Config.Laser) { return; }
+                    var mins = entity!.Collision!.Mins;
+                    var maxs = entity!.Collision!.Maxs;
+                    DrawWireframe3D(mins, maxs, Config.Laser2);
+                }
             }
+            if (!Config.Laser) { return; }
+            var minsopen = entity!.Collision!.Mins;
+            var maxsopen = entity!.Collision!.Maxs;
+            DrawWireframe3D(minsopen, maxsopen, Config.Laser1);
         }
     }
     private int GetPlayersCount()
@@ -201,5 +216,58 @@ public class BombsiteRestrict : BasePlugin, IPluginConfig<Config>
     internal static CCSGameRules GameRules()
     {
         return Utilities.FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules").First().GameRules!;
+    }
+
+    /*
+     * These two functions below were yoinked from SharpTimer by Dea
+     * DrawLaserBetween was mostly copied from CounterStrikeSharp discord, from code-snippset https://discord.com/channels/1160907911501991946/1175947333880524962/1189384833646985276
+     * DrawWireFrame3D was yoinked entirely with some changes from sharptimer since i was too lazy to make it by myself: https://github.com/Letaryat/poor-sharptimer/blob/main/src/Plugin/Utils.cs#L482
+     */
+
+    static public void DrawLaserBetween(Vector startPos, Vector endPos, string _color)
+    {
+        CBeam beam = Utilities.CreateEntityByName<CBeam>("beam")!;
+        if (beam == null) { return; }
+
+        //remove +10 from pos1 and pos2 if you want to beam to be at the bottom.
+        var pos1 = new Vector(startPos.X, startPos.Y, startPos.Z + 15);
+        var pos2 = new Vector(endPos.X, endPos.Y, endPos.Z + 15);   
+
+        beam.Render = Color.FromName(_color);
+        beam.Width = 2.0f;
+        beam.Teleport(pos1, new QAngle(), new Vector());
+        beam.EndPos.Add(pos2);
+        beam.DispatchSpawn();
+    }
+    public void DrawWireframe3D(Vector corner1, Vector corner8, string _color)
+    {
+        Vector corner2 = new(corner1.X, corner8.Y, corner1.Z);
+        Vector corner3 = new(corner8.X, corner8.Y, corner1.Z);
+        Vector corner4 = new(corner8.X, corner1.Y, corner1.Z);
+
+        Vector corner5 = new(corner8.X, corner1.Y, corner8.Z + 0);
+        Vector corner6 = new(corner1.X, corner1.Y, corner8.Z + 0);
+        Vector corner7 = new(corner1.X, corner8.Y, corner8.Z + 0);
+
+        //top square
+        DrawLaserBetween(corner1, corner2, _color);
+        DrawLaserBetween(corner2, corner3, _color);
+        DrawLaserBetween(corner3, corner4, _color);
+        DrawLaserBetween(corner4, corner1, _color);
+
+        if (!Config.Cube) { return; }
+
+        //bottom square
+        DrawLaserBetween(corner5, corner6, _color);
+        DrawLaserBetween(corner6, corner7, _color);
+        DrawLaserBetween(corner7, corner8, _color);
+        DrawLaserBetween(corner8, corner5, _color);
+
+        //connect them both to build a cube
+        DrawLaserBetween(corner1, corner6, _color);
+        DrawLaserBetween(corner2, corner7, _color);
+        DrawLaserBetween(corner3, corner8, _color);
+        DrawLaserBetween(corner4, corner5, _color);
+
     }
 }

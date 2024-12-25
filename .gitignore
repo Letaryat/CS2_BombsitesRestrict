@@ -47,3 +47,8 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+bin/
+obj/
+.vs/
+CS2_BombsitesRestrict.sln
