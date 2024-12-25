@@ -38,3 +38,11 @@ Configuration in
 1. Download the lastest release https://github.com/NockyCZ/CS2_BombsitesRestrict/releases
 2. Unzip into your servers `csgo/addons/counterstrikesharp/plugins/` dir
 3. Restart the server
+
+
+### Laser and cubes preview:
+**Laser:**
+![Laser](imgs/laser.jpg)
+
+**Cube:**
+![Cube](imgs/cube.jpg)

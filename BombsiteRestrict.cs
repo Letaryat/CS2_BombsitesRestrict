@@ -229,12 +229,12 @@ public class BombsiteRestrict : BasePlugin, IPluginConfig<Config>
         CBeam beam = Utilities.CreateEntityByName<CBeam>("beam")!;
         if (beam == null) { return; }
 
-        //remove +10 from pos1 and pos2 if you want to beam to be at the bottom.
-        var pos1 = new Vector(startPos.X, startPos.Y, startPos.Z + 15);
-        var pos2 = new Vector(endPos.X, endPos.Y, endPos.Z + 15);   
+        //remove +5 from pos1 and pos2 if you want to beam to be at the bottom.
+        var pos1 = new Vector(startPos.X, startPos.Y, startPos.Z + 5);
+        var pos2 = new Vector(endPos.X, endPos.Y, endPos.Z + 5);   
 
         beam.Render = Color.FromName(_color);
-        beam.Width = 2.0f;
+        beam.Width = 1.0f;
         beam.Teleport(pos1, new QAngle(), new Vector());
         beam.EndPos.Add(pos2);
         beam.DispatchSpawn();
