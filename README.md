@@ -35,8 +35,8 @@ Configuration in
 
 
 ### Installation
-1. Download the lastest release https://github.com/NockyCZ/CS2_BombsitesRestrict/releases
-2. Unzip into your servers `csgo/addons/counterstrikesharp/plugins/` dir
+1. Download the lastest release,
+2. Unzip into your servers `csgo/addons/counterstrikesharp/plugins/`,
 3. Restart the server
 
 
